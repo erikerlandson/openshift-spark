@@ -31,6 +31,7 @@ RUN yum install -y nss_wrapper && yum clean all
 ENV LD_PRELOAD=libnss_wrapper.so
 
 ENV PATH $PATH:/opt/spark/bin
+ENV SPARK_HOME /opt/spark
 
 COPY common.sh start-master start-worker local-cluster.sh /
 RUN chmod a+rx /common.sh /start-master /start-worker /local-cluster.sh

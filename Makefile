@@ -3,6 +3,7 @@ SPARK_IMAGE=mattf/openshift-spark
 .PHONY: build clean push create destroy
 
 build:
+	./copy-builds.sh
 	docker build -t openshift-spark .
 
 clean:

@@ -33,5 +33,8 @@ ENV LD_PRELOAD=libnss_wrapper.so
 ENV PATH $PATH:/opt/spark/bin
 ENV SPARK_HOME /opt/spark
 
+COPY spark-defaults.conf /opt/spark/conf
+RUN chmod a+r /opt/spark/conf/spark-defaults.conf
+
 COPY common.sh start-master start-worker local-cluster.sh /
 RUN chmod a+rx /common.sh /start-master /start-worker /local-cluster.sh

@@ -5,6 +5,7 @@ SPARK_IMAGE=mattf/openshift-spark
 build:
 	./copy-builds.sh
 	docker build -t openshift-spark .
+	docker tag openshift-spark:latest openshift-spark:scorpion-stare
 
 clean:
 	docker rmi openshift-spark

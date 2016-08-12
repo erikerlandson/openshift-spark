@@ -22,6 +22,7 @@ COPY scorpion-stare-core_2.11-0.0.1-SNAPSHOT.jar /opt/spark/jars
 # Worker startup if it does not exist. instead of making SPARK_HOME
 # world writable, create SPARK_HOME/work.
 RUN mkdir /opt/spark/work && chmod a+rwx /opt/spark/work
+RUN mkdir /opt/spark/logs && chmod a+rwx /opt/spark/logs
 
 # when the containers are not run w/ uid 0, the uid may not map in
 # /etc/passwd and it may not be possible to modify things like
@@ -32,6 +33,8 @@ ENV LD_PRELOAD=libnss_wrapper.so
 
 ENV PATH $PATH:/opt/spark/bin
 ENV SPARK_HOME /opt/spark
+ENV SPARK_WORKER_CORES 1
+ENV SPARK_WORKER_MEMORY 1g
 
 COPY spark-defaults.conf /opt/spark/conf
 RUN chmod a+r /opt/spark/conf/spark-defaults.conf

@@ -7,12 +7,12 @@ if [ -z "$master" ]; then
   exit 1
 fi
 
+. /common.sh
+
 # spin up shuffle service on worker nodes
 echo "Starting shuffle service"
 $SPARK_HOME/sbin/start-shuffle-service.sh
 
 echo "Starting worker, will connect to: $master"
-
-. /common.sh
 
 spark-class org.apache.spark.deploy.worker.Worker $master

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+#echo "sleeping..." >&2
+#sleep 36000
+
 . /common.sh
 
 # run the spark master directly (instead of sbin/start-master.sh) to

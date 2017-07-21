@@ -15,5 +15,11 @@ if [ -z "$uidentry" ] ; then
     echo "$myuid:x:$myuid:$mygid:anonymous uid:$SPARK_HOME:/bin/false" >> /etc/passwd
 fi
 
-# Execute the container CMD under tini for better hygiene
-/sbin/tini -- $@
+if [ -x /sbin/tini ]; then
+    # Execute the container CMD under tini for better hygiene
+    /sbin/tini -- "$@"
+elif [ -x /bin/tini ]; then
+    /bin/tini -- "$@"
+else
+    exec "$@"
+fi

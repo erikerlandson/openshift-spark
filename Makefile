@@ -39,3 +39,4 @@ push: build
 	docker push $(BASEIMAGE)
 	docker push $(DRIVERIMAGE)
 	docker push $(EXECUTORIMAGE)
+	docker push $(STAGINGIMAGE)

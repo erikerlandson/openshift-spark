@@ -1,14 +1,19 @@
 #!/bin/bash
 
-# spark likes to be able to lookup a username for the running UID, if
-# no name is present fake it.
-cat /etc/passwd > /tmp/passwd
-echo "$(id -u):x:$(id -u):$(id -g):dynamic uid:$SPARK_HOME:/bin/false" >> /tmp/passwd
+# Spark likes to be able to lookup a username for the running UID.
+# If no name is present fake it.
+myuid=$(id -u)
+mygid=$(id -g)
+uidentry=$(getent passwd $myuid)
 
-export NSS_WRAPPER_PASSWD=/tmp/passwd
-# NSS_WRAPPER_GROUP must be set for NSS_WRAPPER_PASSWD to be used
-export NSS_WRAPPER_GROUP=/etc/group
+if [ -z "$uidentry" ] ; then
+    # This logic assumes a standard openshift environment, where
+    # the uid has no entry, and no group, and so has root-group assigned.
+    # Also assumes that /etc/passwd has root-group write privs.
+    # It is also possible to add an nss-wrapper fallback that does not
+    # require write privs to passwd, however not all linux distros have nss-wrapper.
+    echo "$myuid:x:$myuid:$mygid:anonymous uid:$SPARK_HOME:/bin/false" >> /etc/passwd
+fi
 
-export LD_PRELOAD=libnss_wrapper.so
-
-exec "$@"
+# Execute the container CMD under tini for better hygiene
+/sbin/tini -- $@

@@ -14,6 +14,7 @@ BASEIMAGE=$(REMOTE)/$(BASENAME)-base:$(TAG)
 DRIVERIMAGE=$(REMOTE)/$(BASENAME)-driver:$(TAG)
 EXECUTORIMAGE=$(REMOTE)/$(BASENAME)-executor:$(TAG) 
 STAGINGIMAGE=$(REMOTE)/$(BASENAME)-staging:$(TAG) 
+INITCONTIMAGE=$(REMOTE)/$(BASENAME)-init-container:$(TAG) 
 
 .PHONY: build push
 
@@ -33,10 +34,15 @@ build_staging: build_base
 	sed -i "s/^FROM.*/FROM $$(echo $(BASEIMAGE) | sed 's/\//\\\//')/" Dockerfile-staging
 	docker build -f Dockerfile-staging -t $(STAGINGIMAGE) .
 
-build: build_driver build_executor build_staging
+build_initcont: build_base
+	sed -i "s/^FROM.*/FROM $$(echo $(BASEIMAGE) | sed 's/\//\\\//')/" Dockerfile-init-container
+	docker build -f Dockerfile-init-container -t $(INITCONTIMAGE) .
+
+build: build_driver build_executor build_staging build_initcont
 
 push: build
 	docker push $(BASEIMAGE)
 	docker push $(DRIVERIMAGE)
 	docker push $(EXECUTORIMAGE)
 	docker push $(STAGINGIMAGE)
+	docker push $(INITCONTIMAGE)

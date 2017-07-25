@@ -17,5 +17,5 @@
 
 FROM manyangled/k8s-native-v2-base:latest
 
-# This is getting a "CMD" from yaml file, which is actually just a command line arg to the comand below.
-ENTRYPOINT [ "/opt/entrypoint.sh", "bin/spark-class", "org.apache.spark.deploy.rest.kubernetes.ResourceStagingServer" ]
+# This is getting a "CMD", which is actually just a command line arg to the comand below.
+ENTRYPOINT [ "/opt/entrypoint.sh", "bin/spark-class", "org.apache.spark.deploy.rest.kubernetes.KubernetesSparkDependencyDownloadInitContainer" ]

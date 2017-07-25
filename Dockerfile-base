@@ -36,4 +36,4 @@ ENV PATH=$PATH:/opt/spark/bin SPARK_HOME=/opt/spark JAVA_HOME=${JAVA_HOME:-/usr}
 
 WORKDIR /opt/spark
 
-ENTRYPOINT /opt/entrypoint.sh
+ENTRYPOINT [ "/opt/entrypoint.sh" ]
